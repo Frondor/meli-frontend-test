@@ -1,26 +1,17 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
-import "./App.css";
-import "./Appi.sass";
+// import logo from "./logo.svg";
+import Header from "./components/header/Header";
+import Breadcrumbs from "./components/breadcrumbs/Breadcrumbs";
+import "./assets/sass/main.sass";
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p className="classy">
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div>
+        <Header />
+        <div id="content" className="container">
+          <Breadcrumbs />
+        </div>
       </div>
     );
   }

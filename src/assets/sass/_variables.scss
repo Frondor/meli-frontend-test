@@ -1,0 +1,27 @@
+// Variables
+//
+// Variables should follow the `$component-state-property-size` formula for
+// consistent naming. Ex: $nav-link-disabled-color and $modal-content-box-shadow-xs.
+
+
+// Mercadolibre
+$search-box-font-size:              18px;
+$search-box-height:                 56px;
+$generic-lg-padding:                32px;
+$generic-sm-padding:                $generic-lg-padding / 2;
+
+$breadcrumb-padding-y:              $generic-sm-padding;
+$breadcrumb-padding-x:              0;
+$breadcrumb-item-padding:           .5rem !default;
+
+$breadcrumb-margin-bottom:          0;
+
+$breadcrumb-bg:                     none;
+// $breadcrumb-divider-color:          $gray-600 !default;
+// $breadcrumb-active-color:           $gray-600 !default;
+// $breadcrumb-divider:                quote("/") !default;
+
+// $breadcrumb-border-radius:          $border-radius !default;
+
+// Bootstrap base variables
+@import "node_modules/bootstrap/scss/variables";
