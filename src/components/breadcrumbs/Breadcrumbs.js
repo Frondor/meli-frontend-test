@@ -1,19 +1,22 @@
 import React from "react";
 import "./breadcrumbs.sass";
 
-export default function(props) {
-  // const list = ["One", "Two", "Three"].map(s => (
-  //   <li key={s}>
-  //     <a href={"/" + s}>{s}</a>
-  //   </li>
-  // ));
+export default function({ path = [] }) {
+  const list = path.map((s, i, arr) => {
+    const current = i === arr.length - 1;
+    let classes = "breadcrumb-item";
+    if (current) classes += " active";
+
+    return (
+      <li className={classes} key={s}>
+        <a href={"/" + s}>{s}</a>
+      </li>
+    );
+  });
+
   return (
     <nav aria-label="breadcrumb">
-      <ol className="breadcrumb">
-        <li className="breadcrumb-item"><a href="/va">Home</a></li>
-        <li className="breadcrumb-item"><a href="/va">Library</a></li>
-        <li className="breadcrumb-item active" aria-current="page">Data</li>
-      </ol>
+      <ol className="breadcrumb">{list}</ol>
     </nav>
   );
 }

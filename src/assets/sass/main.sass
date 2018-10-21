@@ -1,6 +1,24 @@
-// @import "required" already imported in bootstrap below
 @import "bootstrap"
 
 body
-  background-color: theme-color("light");
+  background-color: theme-color("light")
+
+.container
+  max-width: 1000px
+
+#content
+  .bg-white
+    padding: $generic-sm-padding
+    color: theme-color("grey-dark")
+
+.pb-lg
+  padding-bottom: $generic-lg-padding
+.pb-sm
+  padding-bottom: $generic-sm-padding
+.btn
+  &:focus, &:active
+    box-shadow: none !important
+
+.form-control::placeholder
+  color: theme-color("grey-light")
 

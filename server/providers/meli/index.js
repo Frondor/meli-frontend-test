@@ -6,7 +6,7 @@ const parseItem = require("./parseItem");
 const baseURL = "https://api.mercadolibre.com";
 
 // En el práctico se pide devolver un objeto de este tipo, pero no especifica cómo obtenerlo
-// ni aparece en la documentación de la API
+// ni aparece en la documentación de la API. Hardcodeo mi nombre
 const author = {
   name: "Federico",
   lastname: "Vázquez"
@@ -33,9 +33,13 @@ class Meli {
       });
 
       if (categories) {
-        categories = _.get(categories, "values[0].path_from_root", []).map(
-          c => c.name
-        );
+        categories = (
+          (categories.values &&
+            categories.values[0] &&
+            categories.values[0].path_from_root &&
+            categories.values[0].path_from_root) ||
+          []
+        ).map(c => c.name);
       }
 
       return { author, categories, items };
@@ -52,6 +56,16 @@ class Meli {
     return this.http
       .get(`/items/${id}/description`)
       .then(res => res.data.plain_text);
+  }
+
+  currencies() {
+    return this.http.get("/currencies");
+  }
+
+  categories(id) {
+    let endpoint = "/categories";
+    if (id) endpoint += "/" + id;
+    return this.http.get(endpoint);
   }
 }
 
