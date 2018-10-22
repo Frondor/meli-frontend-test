@@ -25,6 +25,7 @@ export default class Searchbox extends Component {
 
   onSubmit(ev) {
     ev.preventDefault();
+    if (!this.state.search) return;
     this.input.current.blur();
 
     this.props.onNavigate(

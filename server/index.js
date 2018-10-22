@@ -16,11 +16,6 @@ const itemController = require("./controllers/items");
 app.get("/api/items", itemController.searchItems);
 app.get("/api/items/:id", itemController.getItem);
 
-// Serve build artifacts
-app.use(express.static(path.join(__dirname, "../build")));
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "../build", "index.html"));
-});
 
 // Extra route bien villera
 app.get("/api/category-path/:id", async (req, res, next) => {
@@ -29,6 +24,12 @@ app.get("/api/category-path/:id", async (req, res, next) => {
   } catch (err) {
     next(err);
   }
+});
+
+// Serve build artifacts
+app.use(express.static(path.join(__dirname, "../build")));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../build", "index.html"));
 });
 
 // TO-DO

@@ -31,10 +31,7 @@ class Meli {
       .filter(f => f.id === "category")
       .map(cats => {
         return (
-          (cats.values &&
-            cats.values[0] &&
-            cats.values[0].path_from_root &&
-            cats.values[0].path_from_root) ||
+          (cats.values && cats.values[0] && cats.values[0].path_from_root) ||
           []
         ).map(c => c.name);
       });
@@ -48,6 +45,8 @@ class Meli {
 
     if (items.length && !categories.length) {
       categories = await this.getCategoryPath(items[0].category_id);
+    } else if (typeof categories[0] !== "string") {
+      categories = _.flatten(categories);
     }
 
     return { author, categories, items };
