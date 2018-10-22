@@ -1,13 +1,16 @@
 @import "../../assets/sass/required"
 
 .item
-  padding: 0 $generic-sm-padding
+  padding: 0 $generic-padding-sm
   &__left
-    padding-top: $generic-sm-padding
+    padding-top: $generic-padding-sm
     max-width: $article-max-width
 
   &__picture
     margin-bottom: calc(100% / 6)
+    @include media-breakpoint-down(xs)
+      margin: -$generic-padding-lg;
+      margin-bottom: $generic-padding-lg
 
   &__description
     h2
@@ -18,17 +21,17 @@
       line-height: 1.25
 
   &__right
-    padding: $generic-sm-padding 0
+    padding: $generic-padding-sm 0
 
     .btn-buy
-      margin-right: $generic-lg-padding
+      margin-right: $generic-padding-lg
 
-    &__condition
-      margin-bottom: $generic-sm-padding
-      line-height: $article-condition-font-size
-      small
-        font-size: $article-condition-font-size
+  &__condition
+    margin-bottom: $generic-padding-sm
+    line-height: 1
+    small
+      font-size: $article-condition-font-size
 
-    h1
-      font-size: $article-title-font-size
-      font-weight: 700;
+  h1
+    font-size: $article-title-font-size
+    font-weight: 700;

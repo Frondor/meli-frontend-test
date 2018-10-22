@@ -1,8 +1,9 @@
-import React from "react";
-import "./results.sass";
-import { item } from "../Item";
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import WaitForIt from "../../components/WaitForIt";
 import PriceTag from "../../components/PriceTag";
 import iconShipping from "../../assets/img/ic_shipping.png";
+import "./results.sass";
 
 const freeShipping = (
   <img
@@ -12,32 +13,40 @@ const freeShipping = (
   />
 );
 
-const results = new Array(4).fill(item).map((item, i) => {
-  return (
-    <li className="item-result row" key={item.id + i}>
-      <div className="item-result__picture col-auto pr-0">
-        <a href="/">
-          <img className="img-fluid" src={item.picture} alt={item.title} />
-        </a>
-      </div>
-      <div className="item-result__content col">
-        <a href="/">
-          <PriceTag className="pb-lg" {...item.price} small={true}>
-            {item.free_shipping && freeShipping}
-          </PriceTag>
-          <h2 className="m-0">{item.title}</h2>
-        </a>
-        {/* La api no pedía esto, pero el spec si */}
-        {/* <div className="item-result__right col-3">Mendoza</div> */}
-      </div>
-    </li>
-  );
-});
+export default class Results extends Component {
+  // constructor(props) {
+  //   super(props);
+  // }
 
-export default function() {
-  return (
-    <section id="results">
-      <ol className="list-unstyled m-0">{results}</ol>
-    </section>
-  );
+  render() {
+    const results = this.props.results.map((item, i) => {
+      return (
+        <li className="item-result row" key={item.id + i}>
+          <div className="item-result__picture col-auto pr-0">
+            <Link to={"/items/" + item.id}>
+              <img className="img-fluid" src={item.picture} alt={item.title} />
+            </Link>
+          </div>
+          <div className="item-result__content col">
+            <Link to={"/items/" + item.id}>
+              <PriceTag className="pb-lg" {...item.price} small={true}>
+                {item.free_shipping && freeShipping}
+              </PriceTag>
+              <h2 className="text-capitalize m-0">{item.title}</h2>
+            </Link>
+            {/* El spec de la api no pedía esto, pero el del diseño si */}
+            {/* <div className="item-result__right col-3">Mendoza</div> */}
+          </div>
+        </li>
+      );
+    });
+
+    return (
+      <WaitForIt ready={this.props.results.length}>
+        <section id="results">
+          <ol className="list-unstyled m-0">{results}</ol>
+        </section>
+      </WaitForIt>
+    );
+  }
 }

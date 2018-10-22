@@ -8,8 +8,8 @@
 $font-family-base:                  -apple-system, "Helvetica Neue", Arial, sans-serif;
 $search-box-font-size:              18px;
 $search-box-height:                 56px;
-$generic-lg-padding:                32px;
-$generic-sm-padding:                $generic-lg-padding / 2;
+$generic-padding-lg:                32px;
+$generic-padding-sm:                $generic-padding-lg / 2;
 
 $article-max-width:                 680px;
 $article-title-font-size:           24px;
@@ -23,7 +23,7 @@ $result-price-font-size:            24px;
 $result-picture-width:              180px;
 
 // Bootstrap breadcrumb
-$breadcrumb-padding-y:              $generic-sm-padding;
+$breadcrumb-padding-y:              $generic-padding-sm;
 $breadcrumb-padding-x:              0;
 $breadcrumb-item-padding:           .5rem !default;
 $breadcrumb-margin-bottom:          0;
@@ -34,7 +34,7 @@ $breadcrumb-divider:                quote("›") !default;
 // $breadcrumb-border-radius:          $border-radius !default;
 
 // Bootstrap grid
-$grid-gutter-width:                 $generic-lg-padding;
+$grid-gutter-width:                 $generic-padding-lg;
 
 // Bootstrap base variables
 @import "node_modules/bootstrap/scss/variables";
