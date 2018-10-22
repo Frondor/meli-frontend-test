@@ -1,16 +1,6 @@
 const Meli = require("../providers/meli");
 const FakeRedis = require("../providers/redis");
 
-const handleError = err => {
-  const status = (err && err.status) || 500;
-  return {
-    message: "human readable text",
-    error: "machine_readable_error_code",
-    status,
-    cause: []
-  };
-};
-
 const isRequired = (params, obj) =>
   params.map(p => {
     if (!obj[p]) {
@@ -93,7 +83,8 @@ const searchItems = async (req, res, next) => {
       return next(err);
     }
 
-    return res.json(await FakeRedis.set(cacheKey, payload));
+    payload = await FakeRedis.set(cacheKey, payload);
+    return res.json(payload);
   }
 
   res.json(payload);

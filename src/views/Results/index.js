@@ -13,6 +13,9 @@ const Cache = {
 export default class Results extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      emptyResults: false
+    };
 
     this.lastSearch = "";
   }
@@ -35,6 +38,7 @@ export default class Results extends Component {
         const { categories, items } = (Cache.lastResults[search] = data);
 
         this.props.setResults(items, categories);
+        this.setState({ emptyResults: !items.length });
       })
       .catch(err => {
         this.props.history.replace("/error/" + err.message);
@@ -55,7 +59,7 @@ export default class Results extends Component {
       />
     );
 
-    const results = this.props.results.map((item, i) => {
+    let results = this.props.results.map((item, i) => {
       return (
         <li className="item-result row" key={item.id + i}>
           <div className="item-result__picture col-auto pr-0">
@@ -90,11 +94,19 @@ export default class Results extends Component {
       );
     });
 
+    if (this.state.emptyResults) {
+      results = <h2 className="text-center mt-4 mb-4">
+          No hemos encontrado nada,
+          <br />
+          ¿Probamos de nuevo?
+        </h2>;
+    } else {
+      results = <ol className="list-unstyled m-0">{results}</ol>;
+    }
+
     return (
-      <WaitForIt ready={this.props.results.length}>
-        <section id="results">
-          <ol className="list-unstyled m-0">{results}</ol>
-        </section>
+      <WaitForIt ready={this.props.results.length || this.state.emptyResults}>
+        <section id="results">{results}</section>
       </WaitForIt>
     );
   }
