@@ -38,8 +38,10 @@ export default class ItemView extends Component {
       <article className="item row">
         <div className="col-xs-12 col-sm-8 col-md-9 item__left">
           <section className="item__picture">
+          {/* filter: blur(5px) grayscale();
+      opacity: 0.5; */}
             <img
-              className="img-fluid"
+              className="w-100"
               src={item.picture}
               alt={`Imagen de ${item.title}`}
             />

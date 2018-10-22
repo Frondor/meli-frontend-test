@@ -1,6 +1,7 @@
 const _ = require("lodash");
 const axios = require("axios");
-const parseItem = require("./parseItem");
+const FakeRedis = require("../redis");
+const transformItem = require("./transformItem");
 
 // Hacer de cuenta que es una variable de entorno ¯\_(ツ)_/¯
 const baseURL = "https://api.mercadolibre.com";
@@ -22,34 +23,40 @@ class Meli {
     this.site = site;
   }
 
-  search(q, limit) {
-    return this.http.get(`/sites/${this.site}/search?q=${q}`).then(res => {
-      let categories = res.data.filters.find(f => f.id === "category");
-      const items = (res.data.results || []).slice(0, limit).map(i => {
-        i = parseItem(i);
-        delete i.sold_quantity; // no se pide en este spec
+  async search(q, limit) {
+    const res = await this.http.get(`/sites/${this.site}/search?q=${q}`);
 
-        return i;
-      });
-
-      if (categories) {
-        categories = (
-          (categories.values &&
-            categories.values[0] &&
-            categories.values[0].path_from_root &&
-            categories.values[0].path_from_root) ||
+    // Try to use the filters, hence saving 1 http request
+    let categories = res.data.filters
+      .filter(f => f.id === "category")
+      .map(cats => {
+        return (
+          (cats.values &&
+            cats.values[0] &&
+            cats.values[0].path_from_root &&
+            cats.values[0].path_from_root) ||
           []
         ).map(c => c.name);
-      }
+      });
 
-      return { author, categories, items };
+    const items = (res.data.results || []).slice(0, limit).map(i => {
+      i = transformItem(i);
+      delete i.sold_quantity; // no se pide en este spec
+
+      return i;
     });
+
+    if (items.length && !categories.length) {
+      categories = await this.getCategoryPath(items[0].category_id);
+    }
+
+    return { author, categories, items };
   }
 
   getItem(id) {
     return this.http
       .get(`/items/${id}`)
-      .then(res => ({ author, item: parseItem(res.data) }));
+      .then(res => ({ author, item: transformItem(res.data) }));
   }
 
   getItemDescription(id) {
@@ -58,14 +65,30 @@ class Meli {
       .then(res => res.data.plain_text);
   }
 
-  currencies() {
+  getCurrencies() {
     return this.http.get("/currencies");
   }
 
-  categories(id) {
-    let endpoint = "/categories";
-    if (id) endpoint += "/" + id;
-    return this.http.get(endpoint);
+  async getCategoryPath(id) {
+    const cacheKey = "categoryPath:" + id;
+    let payload = await FakeRedis.get("categoryPath::");
+
+    if (!payload) {
+      try {
+        const { data } = await this.http.get("/categories/" + id);
+        payload =
+          (data &&
+            data.path_from_root &&
+            data.path_from_root.map(c => c.name)) ||
+          [];
+      } catch (err) {
+        throw err;
+      }
+
+      return await FakeRedis.set(cacheKey, payload);
+    }
+
+    return payload;
   }
 }
 

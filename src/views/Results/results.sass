@@ -20,10 +20,11 @@
       max-width: $result-picture-width / 2
       border-radius: 4px
       @include media-breakpoint-up(sm)
+        width: $result-picture-width
         max-width: $result-picture-width
 
   &__content
-    padding-top: $generic-padding-sm
+    padding: $generic-padding-sm 0
     h2
       font-size: $result-title-font-size / 1.5
       @include media-breakpoint-up(sm)

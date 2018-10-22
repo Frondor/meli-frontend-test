@@ -1,10 +1,10 @@
-import React from "react";
+import React, { Fragment } from "react";
 import "./pricetag.sass";
 
 export default function({
-  currency = "$",
+  symbol,
   amount,
-  decimals = 2,
+  decimals = 0,
   small,
   className,
   children
@@ -13,23 +13,33 @@ export default function({
     fraction;
   if (className) classes += " " + className;
 
-  [, amount, fraction] =
-    amount
-      .toLocaleString(undefined, { minimumFractionDigits: decimals })
-      .match(/(^.+)[,.](\d+$)/) || [];
+  if (amount) {
+    [, amount, fraction] =
+      amount
+        .toLocaleString(undefined, { minimumFractionDigits: decimals })
+        .match(/(^.+)[,.](\d+$)/) || [];
+
+    amount = (
+      <Fragment>
+        {amount}
+        <span className="item-price__decimals">{!small && fraction}</span>
+      </Fragment>
+    );
+  } else {
+    amount = <span>Precio a convenir</span>;
+  }
 
   if (small) {
     classes += " item-price--sm";
-    fraction = <span className="item-price__decimals">{fraction}</span>;
+    fraction = fraction && (
+      <span className="item-price__decimals">{fraction}</span>
+    );
   }
 
   return (
     <div className={classes}>
-      <span className="item-price__currency">{currency} </span>
-      <span className="item-price__amount">
-        {amount}
-        <span className="item-price__decimals">{!small && fraction}</span>
-      </span>
+      {symbol && <span className="item-price__currency">{symbol} </span>}
+      <span className="item-price__amount">{amount}</span>
       {children}
     </div>
   );

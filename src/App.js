@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 import Breadcrumbs from "./components/breadcrumbs/Breadcrumbs";
 
-import { item } from "./views/Item";
-
 // Shared styles
 import "./assets/sass/main.sass";
 
@@ -16,7 +14,6 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      search: "",
       results: [],
       breadcrumb: [
         "Electrónica, Audio y Video",
@@ -28,33 +25,20 @@ class App extends Component {
     };
 
     this.doSearch = this.doSearch.bind(this);
+    this.setResults = this.setResults.bind(this);
   }
 
   doSearch(q) {
     const searchQuery = q
       .toLowerCase()
       .trim()
-      .replace(/\s\s+/gi, "");
+      .replace(/\s\s+/g, "");
 
-    this.setState({
-      search: searchQuery,
-      results: []
-    });
-
-    this.props.history.push("/items?search=" + searchQuery.replace(" ", "+"));
+    this.props.history.push("/items?search=" + searchQuery.replace(/ /g, "+"));
   }
 
-  componentDidMount() {
-    // const queryParams = new URLSearchParams(this.props.location.search);
-    // if (!this.state.search && queryParams.search) {
-    //   this.setS
-    // }
-
-    setTimeout(() => {
-      this.setState({
-        results: new Array(4).fill(item)
-      });
-    }, 2000);
+  setResults (results = [], breadcrumb = []) {
+    this.setState({ results, breadcrumb });
   }
 
   render() {
@@ -62,7 +46,7 @@ class App extends Component {
 
     return (
       <div>
-        <Searchbox value={this.state.search} onSubmit={this.doSearch} />
+        <Searchbox onSubmit={this.doSearch} />
         <main id="content" className="container">
           <Breadcrumbs path={this.state.breadcrumb} />
           <div className="bg-white mb-5">
@@ -71,7 +55,13 @@ class App extends Component {
               <Route
                 path="/items"
                 exact
-                render={props => <ResultsView results={this.state.results} />}
+                render={props => (
+                  <ResultsView
+                    results={this.state.results}
+                    setResults={this.setResults}
+                    {...props}
+                  />
+                )}
               />
             </Switch>
           </div>

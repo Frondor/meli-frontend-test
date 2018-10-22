@@ -1,29 +1,35 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import queryString from "query-string";
 // import searchIcon from "../../assets/img/ic_Search.png";
 import logoURL from "../../assets/img/Logo_ML.png";
 import "./searchbox.sass";
 
 export default class Searchbox extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-      search: props.value || ""
-    }
+      search: ""
+    };
 
     this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this)
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
   onChange(ev) {
     this.setState({
       search: ev.target.value
-    })
+    });
   }
 
   onSubmit(ev) {
     ev.preventDefault();
-    this.props.onSubmit(this.state.search)
+    this.props.onSubmit(this.state.search);
+  }
+
+  componentDidMount() {
+    const { search } = queryString.parse(window.location.search);
+    if (search) this.setState({ search });
   }
 
   render() {
@@ -50,6 +56,7 @@ export default class Searchbox extends Component {
                   type="text"
                   className="form-control"
                   placeholder="Nunca dejes de buscar"
+                  value={this.state.search}
                   onChange={this.onChange}
                 />
                 {/* <div className="input-group-append">
