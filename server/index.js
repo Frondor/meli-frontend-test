@@ -1,7 +1,7 @@
 const compression = require("compression");
 const express = require("express");
 const app = express();
-const PORT = 3000;
+const PORT = 3001;
 
 // gzip - desactivar en caso de contar con un reverse proxy
 app.use(compression());

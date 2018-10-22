@@ -41,7 +41,7 @@ class App extends Component {
       results: []
     });
 
-    this.props.history.push("/items?search=" + searchQuery.replace(" ", "-"));
+    this.props.history.push("/items?search=" + searchQuery.replace(" ", "+"));
   }
 
   componentDidMount() {

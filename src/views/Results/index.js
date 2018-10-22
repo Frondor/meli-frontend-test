@@ -5,20 +5,20 @@ import PriceTag from "../../components/PriceTag";
 import iconShipping from "../../assets/img/ic_shipping.png";
 import "./results.sass";
 
-const freeShipping = (
-  <img
-    src={iconShipping}
-    alt="Free shipping"
-    className="item-result__icon-shipping"
-  />
-);
-
 export default class Results extends Component {
   // constructor(props) {
   //   super(props);
   // }
 
   render() {
+    const freeShipping = (
+      <img
+        src={iconShipping}
+        alt="Free shipping"
+        className="item-result__icon-shipping"
+      />
+    );
+
     const results = this.props.results.map((item, i) => {
       return (
         <li className="item-result row" key={item.id + i}>
