@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Helmet from "react-helmet";
 import PriceTag from "../../components/PriceTag";
 import ApiClient from "../../http/client";
 import "./item.sass";
@@ -55,6 +56,16 @@ export default class ItemView extends Component {
 
     return (
       <article className="item row">
+        <Helmet>
+          {item && <title>{item.title} en Mercadolibre</title>}
+          {item &&
+            item.description && (
+              <meta
+                name="description"
+                content={item.description.substr(0, 200)} // Quick fix
+              />
+            )}
+        </Helmet>
         <div className="col-xs-12 col-sm-8 col-md-9 item__left">
           <section className="item__picture">
             <img

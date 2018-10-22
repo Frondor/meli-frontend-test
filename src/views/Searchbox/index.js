@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Helmet from "react-helmet";
 import queryString from "query-string";
 import searchIcon from "../../assets/img/ic_Search.png";
 import logoURL from "../../assets/img/Logo_ML.png";
@@ -59,6 +60,9 @@ export default class Searchbox extends Component {
   render() {
     return (
       <header id="search-box" className="bg-yellow">
+        <Helmet>
+          {this.state.search && (<title>{this.state.search} en Mercadolibre</title>)}
+        </Helmet>
         <div className="container">
           <div className="row align-items-center">
             <div className="col-auto">
