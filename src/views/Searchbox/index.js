@@ -61,7 +61,9 @@ export default class Searchbox extends Component {
     return (
       <header id="search-box" className="bg-yellow">
         <Helmet>
-          {this.state.search && (<title>{this.state.search} en Mercadolibre</title>)}
+          {this.state.search && (
+            <title>{this.state.search} en Mercadolibre</title>
+          )}
         </Helmet>
         <div className="container">
           <div className="row align-items-center">

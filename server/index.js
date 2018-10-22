@@ -16,7 +16,6 @@ const itemController = require("./controllers/items");
 app.get("/api/items", itemController.searchItems);
 app.get("/api/items/:id", itemController.getItem);
 
-
 // Extra route bien villera
 app.get("/api/category-path/:id", async (req, res, next) => {
   try {
@@ -35,4 +34,6 @@ app.get("*", (req, res) => {
 // TO-DO
 //  Error handler goes here
 
-app.listen(PORT, () => console.log(`App ready on port: ${PORT}!`));
+app.listen(process.env.PORT || PORT, () =>
+  console.log(`App ready on port: ${PORT}!`)
+);

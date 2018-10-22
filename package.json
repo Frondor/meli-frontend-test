@@ -2,11 +2,16 @@
   "name": "meli-frontend",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=8"
+  },
   "dependencies": {
     "axios": "^0.18.0",
     "bootstrap": "^4.1.3",
+    "compression": "^1.7.3",
     "cors": "^2.8.4",
     "express": "^4.16.4",
+    "lodash": "^4.17.11",
     "query-string": "^6.2.0",
     "react-helmet": "^5.2.0"
   },

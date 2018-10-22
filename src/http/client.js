@@ -19,8 +19,12 @@ class Http {
 }
 
 // Hack villero para que funcione por ip de la red también
-const { protocol, host } = window.location;
-const baseURL = protocol + "//" + host.substr(0, host.length - 1) + "1/api";
+let { protocol, host } = window.location;
+
+if (process.env.NODE_ENV === "production") host += "/api"
+else host = host.substr(0, host.length - 1) + "1/api";
+
+const baseURL = protocol + "//" + host;
 export default new Http({
   baseURL,
   timeout: 11000
