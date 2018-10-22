@@ -1,7 +1,8 @@
 const compression = require("compression");
+const Meli = require("./providers/meli");
 const express = require("express");
 const cors = require("cors");
-const Meli = require("./providers/meli");
+const path = require("path");
 const app = express();
 const PORT = 3001;
 
@@ -11,10 +12,17 @@ app.use(compression());
 // Import controllers
 const itemController = require("./controllers/items");
 
+// Main routes
 app.get("/api/items", itemController.searchItems);
 app.get("/api/items/:id", itemController.getItem);
 
-// Extra route
+// Serve build artifacts
+app.use(express.static(path.join(__dirname, "../build")));
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "../build", "index.html"));
+});
+
+// Extra route bien villera
 app.get("/api/category-path/:id", async (req, res, next) => {
   try {
     return res.json(await Meli.getCategoryPath(req.params.id));
@@ -24,6 +32,6 @@ app.get("/api/category-path/:id", async (req, res, next) => {
 });
 
 // TO-DO
-//  Error handler
+//  Error handler goes here
 
 app.listen(PORT, () => console.log(`App ready on port: ${PORT}!`));

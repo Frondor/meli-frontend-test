@@ -51,55 +51,53 @@ export default class Results extends Component {
   }
 
   render() {
-    const freeShipping = (
-      <img
-        src={iconShipping}
-        alt="Free shipping"
-        className="item-result__icon-shipping"
-      />
-    );
-
-    let results = this.props.results.map((item, i) => {
-      return (
-        <li className="item-result row" key={item.id + i}>
-          <div className="item-result__picture col-auto pr-0">
-            <a href={"/item/" + item.id} onClick={e => this.goToItem(e, item)}>
-              <img className="img-fluid" src={item.picture} alt={item.title} />
-            </a>
-          </div>
-          <div className="item-result__content col">
-            <div className="row m-0 p-0">
-              <div className="col">
-                <a
-                  href={"/item/" + item.id}
-                  onClick={e => this.goToItem(e, item)}
-                >
-                  <PriceTag className="pb-lg" {...item.price} small={true}>
-                    {item.free_shipping && freeShipping}
-                  </PriceTag>
-                  <h2 className="text-capitalize m-0">{item.title}</h2>
-                </a>
-              </div>
-
-              {item.location && (
-                <div className="col-xs-12 col-md-3 pt-3 text-muted">
-                  <small className="item-result__right text-capitalize">
-                    {item.location}
-                  </small>
-                </div>
-              )}
+    let results = this.props.results.map(item => (
+      <li className="item-result row" key={item.id}>
+        <div className="item-result__picture col-auto pr-0">
+          <a href={"/item/" + item.id} onClick={e => this.goToItem(e, item)}>
+            <img className="img-fluid" src={item.picture} alt={item.title} />
+          </a>
+        </div>
+        <div className="item-result__content col">
+          <div className="row m-0 p-0">
+            <div className="col">
+              <a
+                href={"/item/" + item.id}
+                onClick={e => this.goToItem(e, item)}
+              >
+                <PriceTag className="pb-lg" {...item.price} small={true}>
+                  {item.free_shipping && (
+                    <img
+                      src={iconShipping}
+                      alt="Free shipping"
+                      className="item-result__icon-shipping"
+                    />
+                  )}
+                </PriceTag>
+                <h2 className="text-capitalize m-0">{item.title}</h2>
+              </a>
             </div>
+
+            {item.location && (
+              <div className="col-xs-12 col-md-3 pt-3 text-muted">
+                <small className="item-result__right text-capitalize">
+                  {item.location}
+                </small>
+              </div>
+            )}
           </div>
-        </li>
-      );
-    });
+        </div>
+      </li>
+    ));
 
     if (this.state.emptyResults) {
-      results = <h2 className="text-center mt-4 mb-4">
+      results = (
+        <h2 className="text-center mt-4 mb-4">
           No hemos encontrado nada,
           <br />
           ¿Probamos de nuevo?
-        </h2>;
+        </h2>
+      );
     } else {
       results = <ol className="list-unstyled m-0">{results}</ol>;
     }

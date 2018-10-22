@@ -86,7 +86,7 @@ export default class Searchbox extends Component {
                 <div className="input-group-append">
                   <button
                     className="btn btn-outline-secondary bg-light border-0"
-                    type="button"
+                    type="submit"
                   >
                     <img src={searchIcon} alt="Ícono de búsqueda" />
                   </button>

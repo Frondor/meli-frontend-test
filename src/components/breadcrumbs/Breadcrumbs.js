@@ -9,7 +9,9 @@ export default function({ path = [] }) {
 
     return (
       <li className={classes} key={s}>
-        <a href={"/" + s}>{s}</a>
+        <a href="/" onClick={e => e.preventDefault()}>
+          {s}
+        </a>
       </li>
     );
   });

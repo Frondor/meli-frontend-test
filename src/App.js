@@ -44,7 +44,10 @@ class App extends Component {
   }
 
   onNavigate(path) {
-    if (path === "/") return this.setState({ breadcrumb: [] });
+    if (path === "/") {
+      this.setState({ results: [], breadcrumb: [], item: null });
+    }
+
     this.props.history.push(path);
   }
 
