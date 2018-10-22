@@ -16,6 +16,12 @@ respuesta, por lo tanto en algunas áreas improvisé.
       <br>Esta fue mi primer experiencia con React :muscle: (actualmente trabajo mucho con Vue)
     </td>
   </tr>
+  <tr>
+    <th>Práctico:</th>
+    <td>
+      <a href="spec.pdf">Front-End Test Práctico.pdf</a>
+    </td>
+  </tr>
 </table>
 
 ## Run
