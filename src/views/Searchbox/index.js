@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import queryString from "query-string";
-// import searchIcon from "../../assets/img/ic_Search.png";
+import searchIcon from "../../assets/img/ic_Search.png";
 import logoURL from "../../assets/img/Logo_ML.png";
 import "./searchbox.sass";
 
@@ -11,6 +10,8 @@ export default class Searchbox extends Component {
     this.state = {
       search: ""
     };
+
+    this.input = React.createRef();
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -24,12 +25,34 @@ export default class Searchbox extends Component {
 
   onSubmit(ev) {
     ev.preventDefault();
-    this.props.onSubmit(this.state.search);
+    this.input.current.blur();
+
+    this.props.onNavigate(
+      "/items?search=" +
+        this.state.search
+          .toLowerCase()
+          .trim()
+          .replace(/\s\s+/g, "")
+          .replace(/ /g, "+")
+    );
   }
 
   componentDidMount() {
-    const { search } = queryString.parse(window.location.search);
-    if (search) this.setState({ search });
+    this.setState({}); // force componentDidUpdate
+  }
+
+  componentDidUpdate() {
+    const { search } = queryString.parse(this.props.location.search);
+    if (search && search !== this.lastSearch) {
+      this.lastSearch = search;
+      this.setState({ search });
+    }
+  }
+
+  goHome(e) {
+    e.preventDefault();
+    this.setState({ search: "" });
+    this.props.onNavigate("/");
   }
 
   render() {
@@ -39,14 +62,15 @@ export default class Searchbox extends Component {
           <div className="row align-items-center">
             <div className="col-auto">
               <div id="logo">
-                <Link to="/">
+                <a href="/" onClick={e => this.goHome(e)}>
                   <img src={logoURL} alt="Mercadolibre logo" />
-                </Link>
+                </a>
               </div>
             </div>
             <form className="col pl-2" onSubmit={this.onSubmit}>
               <div id="search-box" className="input-group">
                 <input
+                  ref={this.input}
                   tabIndex="1"
                   maxLength="120"
                   autoCapitalize="off"
@@ -59,9 +83,14 @@ export default class Searchbox extends Component {
                   value={this.state.search}
                   onChange={this.onChange}
                 />
-                {/* <div className="input-group-append">
-                  <img src={searchIcon} alt="Ícono de búsqueda" class="img-fluid" />
-                </div> */}
+                <div className="input-group-append">
+                  <button
+                    className="btn btn-outline-secondary bg-light border-0"
+                    type="button"
+                  >
+                    <img src={searchIcon} alt="Ícono de búsqueda" />
+                  </button>
+                </div>
               </div>
             </form>
           </div>

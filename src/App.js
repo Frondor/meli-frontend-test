@@ -10,35 +10,42 @@ import Searchbox from "./views/Searchbox";
 import ItemView from "./views/Item";
 import ResultsView from "./views/Results";
 
+// Extra views
+import Home from "./views/Home";
+// TO-DO: Error Handler HOComponent
+const ErrorView = props => (
+  <h2 className="bg-danger p-4 text-white">
+    {props.match.params.m || "Una loca página de error genérica se asoma"}
+  </h2>
+);
+
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      item: null,
       results: [],
-      breadcrumb: [
-        "Electrónica, Audio y Video",
-        "iPod",
-        "Reproductores",
-        "iPod touch",
-        "32 GB"
-      ]
+      breadcrumb: []
     };
 
-    this.doSearch = this.doSearch.bind(this);
+    this.setItem = this.setItem.bind(this);
     this.setResults = this.setResults.bind(this);
+    this.onNavigate = this.onNavigate.bind(this);
   }
 
-  doSearch(q) {
-    const searchQuery = q
-      .toLowerCase()
-      .trim()
-      .replace(/\s\s+/g, "");
-
-    this.props.history.push("/items?search=" + searchQuery.replace(/ /g, "+"));
-  }
-
-  setResults (results = [], breadcrumb = []) {
+  setResults(results = [], breadcrumb = []) {
     this.setState({ results, breadcrumb });
+  }
+
+  // Transition with base data, then fetch the rest of the item
+  setItem(item, breadcrumb = []) {
+    this.setState({ item, breadcrumb });
+    this.props.history.push("/items/" + item.id);
+  }
+
+  onNavigate(path) {
+    if (path === "/") return this.setState({ breadcrumb: [] });
+    this.props.history.push(path);
   }
 
   render() {
@@ -46,12 +53,26 @@ class App extends Component {
 
     return (
       <div>
-        <Searchbox onSubmit={this.doSearch} />
+        <Searchbox
+          location={this.props.location}
+          onNavigate={this.onNavigate}
+        />
         <main id="content" className="container">
           <Breadcrumbs path={this.state.breadcrumb} />
           <div className="bg-white mb-5">
             <Switch>
-              <Route path="/items/:id" exact component={ItemView} />
+              <Route path="/" exact component={Home} />
+              <Route
+                path="/items/:id"
+                exact
+                render={props => (
+                  <ItemView
+                    item={this.state.item}
+                    setItem={this.setItem}
+                    {...props}
+                  />
+                )}
+              />
               <Route
                 path="/items"
                 exact
@@ -59,10 +80,12 @@ class App extends Component {
                   <ResultsView
                     results={this.state.results}
                     setResults={this.setResults}
+                    setItem={this.setItem}
                     {...props}
                   />
                 )}
               />
+              <Route path="/error/:m?" component={ErrorView} />
             </Switch>
           </div>
         </main>

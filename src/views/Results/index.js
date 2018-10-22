@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import queryString from "query-string";
 import WaitForIt from "../../components/WaitForIt";
 import PriceTag from "../../components/PriceTag";
@@ -31,11 +30,20 @@ export default class Results extends Component {
       return this.props.setResults(items, categories);
     } else this.props.setResults([]);
 
-    ApiClient.search(search).then(({ data }) => {
-      const { categories, items } = (Cache.lastResults[search] = data);
+    ApiClient.search(search)
+      .then(({ data }) => {
+        const { categories, items } = (Cache.lastResults[search] = data);
 
-      this.props.setResults(items, categories);
-    });
+        this.props.setResults(items, categories);
+      })
+      .catch(err => {
+        this.props.history.replace("/error/" + err.message);
+      });
+  }
+
+  goToItem(ev, item) {
+    ev.preventDefault();
+    this.props.setItem(item);
   }
 
   render() {
@@ -51,19 +59,22 @@ export default class Results extends Component {
       return (
         <li className="item-result row" key={item.id + i}>
           <div className="item-result__picture col-auto pr-0">
-            <Link to={"/items/" + item.id}>
+            <a href={"/item/" + item.id} onClick={e => this.goToItem(e, item)}>
               <img className="img-fluid" src={item.picture} alt={item.title} />
-            </Link>
+            </a>
           </div>
           <div className="item-result__content col">
             <div className="row m-0 p-0">
               <div className="col">
-                <Link to={"/items/" + item.id}>
+                <a
+                  href={"/item/" + item.id}
+                  onClick={e => this.goToItem(e, item)}
+                >
                   <PriceTag className="pb-lg" {...item.price} small={true}>
                     {item.free_shipping && freeShipping}
                   </PriceTag>
                   <h2 className="text-capitalize m-0">{item.title}</h2>
-                </Link>
+                </a>
               </div>
 
               {item.location && (
