@@ -17,6 +17,12 @@ respuesta, por lo tanto en algunas áreas improvisé.
     </td>
   </tr>
   <tr>
+    <th>Demo:</th>
+    <td>
+      <a href="https://frondor-meli.herokuapp.com" _target="blank">Heroku</a>
+    </td>
+  </tr>
+  <tr>
     <th>Práctico:</th>
     <td>
       <a href="spec.pdf">Front-End Test Práctico.pdf</a>

@@ -26,7 +26,7 @@ class Meli {
   async search(q, limit) {
     const res = await this.http.get(`/sites/${this.site}/search?q=${q}`);
 
-    // Try to use the filters, hence saving 1 http request
+    // Try to use the filters, hence saving 1 http request for its category path
     let categories = res.data.filters
       .filter(f => f.id === "category")
       .map(cats => {
@@ -55,13 +55,14 @@ class Meli {
   getItem(id) {
     return this.http
       .get(`/items/${id}`)
-      .then(res => ({ author, item: transformItem(res.data) }));
+      .then(res => ({ author, item: res.data && transformItem(res.data) }));
   }
 
   getItemDescription(id) {
     return this.http
       .get(`/items/${id}/description`)
-      .then(res => res.data.plain_text);
+      .then(res => res.data && res.data.plain_text)
+      .catch(() => null); // Esto no se hace :D
   }
 
   getCurrencies() {

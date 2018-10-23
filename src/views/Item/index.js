@@ -6,7 +6,7 @@ import "./item.sass";
 import WaitForIt from "../../components/WaitForIt";
 
 const ItemDescription = ({ value }) => (
-  <WaitForIt ready={value}>
+  <WaitForIt ready={value || value === null}>
     <h2 className="pb-lg m-0">Descripción del producto</h2>
     <p className="m-0 pb-sm">{value}</p>
   </WaitForIt>
